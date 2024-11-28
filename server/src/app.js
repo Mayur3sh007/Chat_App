@@ -15,8 +15,14 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Array notation is more explicit
   credentials: true,
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'Access-Control-Allow-Credentials'
+  ]
 }));
 
 app.use("/api/v1/user", userRouter);
