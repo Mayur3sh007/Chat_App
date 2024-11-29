@@ -17,13 +17,9 @@ const SignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const submitData = new FormData();
-    submitData.append('username', formData.username);
-    submitData.append('email', formData.email);
-    submitData.append('password', formData.password);
 
     try {
-      const response = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/register', submitData,{withCredentials:true});
+      const response = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/register', formData,{withCredentials:true});
       // const response = await axios.post('http://localhost:3000/api/v1/user/register', formData, { withCredentials: true });
 
       if (response.data.success) {
