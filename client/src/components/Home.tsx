@@ -32,13 +32,18 @@ const Home = () => {
 
   const logout = async () => {
     try {
-      await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
-      // await axios.get("http://localhost:3000/api/v1/user/logout",{withCredentials:true})
-      setUser(null);
+      // Sending a POST request to logout, passing userId in the request body
+      await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { userId: user._id }, { withCredentials: true });
+      // Alternative DELETE request, passing userId in the request body
+      // await axios.delete("http://localhost:3000/api/v1/user/logout", { data: { userId: user._id }, withCredentials: true });
+  
+      setUser(null); // Reset user state to null after successful logout
+      navigate("/login"); // Redirect to login page after logging out
     } catch (err) {
       console.error("Error logging out:", err);
     }
   };
+  
 
   if (loading) {
     return (

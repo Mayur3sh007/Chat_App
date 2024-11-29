@@ -217,13 +217,17 @@ const SocketInterface: React.FC = () => {
     // Emit the logout event with the userId
     socket?.emit("logout", userId);
   
-    await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
-    // await axios.get("http://localhost:3000/api/v1/user/logout",{withCredentials:true})
-
+    try {
+      await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { userId }, { withCredentials: true });
+      // await axios.delete("http://localhost:3000/api/v1/user/logout", { data: { userId }, withCredentials: true });
   
-    // Redirect to the login page
-    navigate('/login');
+      // Redirect to the login page
+      navigate('/login');
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
+  
   
   
 
