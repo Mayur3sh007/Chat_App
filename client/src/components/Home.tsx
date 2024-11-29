@@ -14,8 +14,8 @@ const Home = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", { withCredentials: true });
-      console.log("Current User:", response.data.data.username)
       // const response = await axios.get("http://localhost:3000/api/v1/user/getuser",{withCredentials:true})
+      console.log("Current User:", response.data.data.username)
       setUser(response.data.data);
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -35,6 +35,7 @@ const Home = () => {
     try {
       // Send GET request to logout route with the credentials (cookies)
       const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
+      // const response = await axios.get("http://localhost:3000/api/v1/user/logout", { withCredentials: true });
 
       // Optionally handle the response if needed
       if (response.status === 200) {

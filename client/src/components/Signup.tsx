@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
 import { AuthLayout } from './AuthLayout';
 import axios from 'axios';
 
@@ -25,16 +24,23 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/register', submitData,{withCredentials:true});
-      // const response = await axios.post('http://localhost:3000/api/v1/user/register', formData, {withCredentials:true});
+      // const response = await axios.post('http://localhost:3000/api/v1/user/register', formData, { withCredentials: true });
 
       if (response.data.success) {
-        toast.success('Account created successfully!');
-        navigate('/');
+        alert('Account created successfully!');
+        navigate('/login');
       } else {
-        toast.error('Failed to create account. Please try again.');
+        alert("Failed to create account. Please try again.");
       }
-    } catch (error) {
-      toast.error('An error occurred while creating the account');
+      console.log(response);
+    } catch (error : any) {
+      // Display specific error message from the backend if available
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        // Fallback to a generic error message
+        alert('User with same email or Name already exists');
+      }
     }
   };
 

@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (existedUser) {
-    alert("User with same email or Name already exists")
+    // alert("User with same email or Name already exists")
     throw new ApiError(409, "User with same username or email exists");
   }
 

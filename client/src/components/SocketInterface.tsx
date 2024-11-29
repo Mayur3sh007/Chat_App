@@ -51,15 +51,15 @@ const SocketInterface: React.FC = () => {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", {
-          withCredentials: true,
-        });
         // const response = await axios.get("http://localhost:3000/api/v1/user/getuser", {
         //   withCredentials: true,
         // });
-        console.log("User Data fetched: " + response.data.data);
+        const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", {
+          withCredentials: true,
+        });
+        // console.log("User Data fetched: " + response.data.data);
 
-        alert("Logged In as: " + response.data.data.username);
+        // alert("Logged In as: " + response.data.data.username);
         const user = response.data.data;
         console.log("Username: " + user.username);
         console.log("User ID: " + user._id);
@@ -73,14 +73,14 @@ const SocketInterface: React.FC = () => {
           });
         }
 
-        const chatHistoryResponse = await axios.get(
-          "https://chat-app-backend-5es5.onrender.com/api/v1/chat/history",
-          { withCredentials: true }
-        );
         // const chatHistoryResponse = await axios.get(
         //   "http://localhost:3000/api/v1/chat/history",
         //   { withCredentials: true }
         // );
+        const chatHistoryResponse = await axios.get(
+          "https://chat-app-backend-5es5.onrender.com/api/v1/chat/history",
+          { withCredentials: true }
+        );
         const processedMessages = chatHistoryResponse.data.data.map((msg: any) => ({
           id: msg._id,
           text: msg.message,
@@ -92,7 +92,7 @@ const SocketInterface: React.FC = () => {
 
         setMessages(processedMessages);
       } catch (error) {
-        alert("Error fetching messages: " + error);
+        alert("User Not Found: " + " Please Login to Chat");
         navigate("/");
       }
     };
@@ -219,6 +219,7 @@ const SocketInterface: React.FC = () => {
     try {
       // Send GET request to logout route with the credentials (cookies)
       const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
+      // const response = await axios.get("http://localhost:3000/api/v1/user/logout", { withCredentials: true });
 
       // Optionally handle the response if needed
       if (response.status === 200) {
