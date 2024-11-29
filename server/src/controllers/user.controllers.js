@@ -85,7 +85,7 @@ const registerUser = asyncHandler(async (req,res) =>{
 })
 
 const loginUser = asyncHandler(async (req, res) => {
-    // console.log("Login Process Started");
+    console.log("Login Process Started");
     const { email, password } = req.body;
   
     if (!email) {
@@ -110,7 +110,8 @@ const loginUser = asyncHandler(async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',  // Set secure to true only in production
       expires: new Date(Date.now() + 24 * 3600 * 1000), // Expire in 1 day
-      sameSite: 'Strict',  // Prevent cross-site cookie access
+      sameSite: 'none',  // Allow cross-site cookie access for production
+      //strict in dev
     };
   
     return res
