@@ -209,7 +209,7 @@ const SocketInterface: React.FC = () => {
     });
   
     // Redirect to the login page
-    window.location.href = "/login";
+    navigate('/login');
   };
   
   
