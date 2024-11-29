@@ -16,6 +16,7 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN, 
+  // origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Array notation is more explicit
   credentials: true,
   allowedHeaders: [
@@ -32,7 +33,8 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://chat-upp.onrender.com',
+    origin: process.env.CORS_ORIGIN, 
+    // origin: 'http://localhost:5173',
     methods: ['GET', 'POST'],
     credentials: true,
   },

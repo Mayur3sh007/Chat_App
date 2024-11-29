@@ -28,8 +28,9 @@ const generateAccessandRefreshTokens = async(userId)=>{
 }
 
 const registerUser = asyncHandler(async (req, res) => {
+  console.log("Registration started")
   const { email, username, password } = req.body;
-
+  console.log("Data received: " , email,username,password)
   if ([email, username, password].some((field) => String(field).trim() === "")) {
     throw new ApiError(400, "All fields are Required");
   }
@@ -39,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (existedUser) {
+    alert("User with same email or Name already exists")
     throw new ApiError(409, "User with same username or email exists");
   }
 
@@ -88,6 +90,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     console.log("Login Process Started");
     const { email, password } = req.body;
+    console.log("email and password",email,password)
   
     if (!email) {
       throw new ApiError(400, "Username & Email is required");

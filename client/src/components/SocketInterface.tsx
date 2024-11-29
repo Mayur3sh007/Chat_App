@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { Send, Users, LogOut, Paperclip } from "lucide-react";
+import { Send, Users, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -54,8 +54,15 @@ const SocketInterface: React.FC = () => {
         const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", {
           withCredentials: true,
         });
+        // const response = await axios.get("http://localhost:3000/api/v1/user/getuser", {
+        //   withCredentials: true,
+        // });
+        console.log("User Data fetched: " + response.data.data);
+        
         alert("Logged In as: " + response.data.data.username);
         const user = response.data.data;
+        console.log("Username: " + user.username);
+        console.log("User ID: " + user._id);
         setUsername(user.username);
         setUserId(user._id);
 
@@ -70,6 +77,10 @@ const SocketInterface: React.FC = () => {
           "https://chat-app-backend-5es5.onrender.com/api/v1/chat/history",
           { withCredentials: true }
         );
+        // const chatHistoryResponse = await axios.get(
+        //   "http://localhost:3000/api/v1/chat/history",
+        //   { withCredentials: true }
+        // );
         const processedMessages = chatHistoryResponse.data.data.map((msg: any) => ({
           id: msg._id,
           text: msg.message,
@@ -91,23 +102,26 @@ const SocketInterface: React.FC = () => {
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
+    // console.log("started sending process")
     if (!message.trim() && !mediaFile) return;
+    // console.log("Sender: ", userId);
+    // console.log("Username: ", username)
+    // console.log("Message", message)
+    const formData = {
+      senderId: userId,
+      username: username,
+      message: message,
+      mediaFile: mediaFile ? mediaFile : null, 
+    };
 
-    const formData = new FormData();
-    formData.append("senderId", userId);
-    formData.append("username", username);
-    formData.append("message", message);
-    if (mediaFile) {
-      formData.append("media", mediaFile); // Attach the actual file
-    }
-    console.log("Sender ID:", userId);
+    // console.log("Sender ID:", userId);
     const clientMessageId = `${userId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     try {
-      const response = await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/chat/send", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log("Sending message to backend:", response.data.data);
+      // console.log("Sending message to backend:", formData);
+      // const response = await axios.post("http://localhost:3000/api/v1/chat/send", formData, { withCredentials:true});
+      const response = await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/chat/send", formData, { withCredentials:true});
+
       socket?.emit("message:send", {
         ...response.data.data, 
         clientMessageId,
@@ -199,14 +213,13 @@ const SocketInterface: React.FC = () => {
   }, [socket, username]);
 
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Emit the logout event with the userId
     socket?.emit("logout", userId);
   
-    // Handle logout logic (clear session, etc.)
-    axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", {
-      withCredentials: true,
-    });
+    await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
+    // await axios.get("http://localhost:3000/api/v1/user/logout",{withCredentials:true})
+
   
     // Redirect to the login page
     navigate('/login');
@@ -330,16 +343,7 @@ const SocketInterface: React.FC = () => {
                 placeholder="Type a message..."
                 className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
-              <input
-                type="file"
-                accept="image/*,video/*"
-                onChange={(e) => setMediaFile(e.target.files?.[0] ?? null)}
-                className="hidden"
-                id="media-upload"
-              />
-              <label htmlFor="media-upload" className="cursor-pointer p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
-                <Paperclip className="w-6 h-6 text-gray-500" />
-              </label>
+              
               <button type="submit" className="bg-indigo-600 text-white p-3 rounded-full hover:bg-indigo-700 transition-colors duration-200">
                 <Send className="w-5 h-5" />
               </button>

@@ -23,17 +23,9 @@ export default function SignUp() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            const form = new FormData();
-            // form.append("username", formData.username);
-            form.append("email", formData.email);
-            form.append("password", formData.password);
-
-            // Send form data to the backend
-            const user = await axios.post(
-                'https://chat-app-backend-5es5.onrender.com/api/v1/user/login',
-                formData,{withCredentials:true}
-            );
+        try { 
+            const user = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/login', formData,{withCredentials:true});
+            // const user = await axios.post('http://localhost:3000/api/v1/user/login', formData,{withCredentials:true});
             // console.log(user.data.data);
             if(!user.data.success) throw new Error(user.data.message);
             alert(user.data.message); // Show success message

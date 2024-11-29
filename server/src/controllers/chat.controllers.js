@@ -1,20 +1,12 @@
 import { Chat } from "../models/chat.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
-import { uploadOnCloudinary } from "../utils/cloudinary.js"; // Assuming this function handles the upload process
 
 const saveMessage = asyncHandler(async (req, res) => {
   const { senderId, message, username } = req.body; // Extract senderId and message from the request body
-  console.log("Request Body:", req.body);
+  // console.log("Request Body:", req.body);
   const senderObjectId = new mongoose.Types.ObjectId(senderId);
   let mediaUrl = null;
-  if (req.file) {
-    const uploadedMedia = await uploadOnCloudinary(req.file.path); // Upload the file
-    if (!uploadedMedia) {
-      throw new Error("Media upload failed");
-    }
-    mediaUrl = uploadedMedia.url; // Save the media URL
-  }
   
   if(!username) throw new Error("Username is required");
   if(!senderId) throw new Error("Sender ID is required");
@@ -23,7 +15,7 @@ const saveMessage = asyncHandler(async (req, res) => {
     sender: senderObjectId,
     username,
     message,
-    media: mediaUrl,
+    mediaUrl
   });
 
   return res.status(201).json({
