@@ -89,9 +89,6 @@ The frontend is usually hosted at `http://localhost:5173`, and the backend runs 
 2. Create a new branch for your feature or bugfix
 3. Submit a pull request
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
 ## Acknowledgments
 - [React](https://reactjs.org/)
 - [Node.js](https://nodejs.org/)
