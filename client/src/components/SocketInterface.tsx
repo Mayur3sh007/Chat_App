@@ -54,6 +54,7 @@ const SocketInterface: React.FC = () => {
         const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", {
           withCredentials: true,
         });
+        alert("Logged In as: " + response.data.data.username);
         const user = response.data.data;
         setUsername(user.username);
         setUserId(user._id);
@@ -80,6 +81,7 @@ const SocketInterface: React.FC = () => {
 
         setMessages(processedMessages);
       } catch (error) {
+        alert("Error fetching messages: " + error);
         navigate("/");
       }
     };
