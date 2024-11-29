@@ -5,10 +5,7 @@ import { getUserData, loginUser, logoutUser, registerUser } from "../controllers
 
 const userRouter = Router();
 
-userRouter.route("/register").post(
-  uploadOnServer.single("avatar"),
-  registerUser
-)
+userRouter.route("/register").post(registerUser)
 userRouter.route("/login").post(loginUser)
 
 

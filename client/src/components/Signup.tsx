@@ -1,9 +1,6 @@
-
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { Upload } from 'lucide-react';
 import { AuthLayout } from './AuthLayout';
 import axios from 'axios';
 
@@ -14,48 +11,25 @@ const SignUp: React.FC = () => {
     email: '',
     password: '',
   });
-  const [avatar, setAvatar] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string>('');
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setAvatar(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const toSignIn = () => {
     navigate("/login");
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!avatar) {
-      toast.error('Please select an avatar');
-      return;
-    }
 
     const submitData = new FormData();
     submitData.append('username', formData.username);
     submitData.append('email', formData.email);
     submitData.append('password', formData.password);
-    submitData.append('avatar', avatar);
 
     try {
-      const response = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/register', submitData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/register', submitData,{withCredentials:true});
+      // const response = await axios.post('http://localhost:3000/api/v1/user/register', formData, {withCredentials:true});
 
       if (response.data.success) {
         toast.success('Account created successfully!');
-        navigate('/chat');
+        navigate('/');
       } else {
         toast.error('Failed to create account. Please try again.');
       }
@@ -68,25 +42,6 @@ const SignUp: React.FC = () => {
     <AuthLayout title="Create your account">
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="rounded-md shadow-sm space-y-4">
-          {/* Avatar Upload Section */}
-          <div className="flex justify-center">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center border-2 border-gray-300">
-                {avatarPreview ? (
-                  <img src={avatarPreview} alt="Avatar preview" className="w-full h-full object-cover" />
-                ) : (
-                  <Upload className="h-8 w-8 text-gray-400" />
-                )}
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-            </div>
-          </div>
-
           {/* Username Input */}
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">

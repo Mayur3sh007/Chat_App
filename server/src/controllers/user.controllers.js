@@ -27,62 +27,63 @@ const generateAccessandRefreshTokens = async(userId)=>{
     }
 }
 
-const registerUser = asyncHandler(async (req,res) =>{   
-  const {email,username,password} = req.body         
-  // console.log("email",email);
-  // console.log("username",username);
-  // console.log("password",password);
-  
-  if(
-      [email,username,password].some((field)=>String(field).trim() === "")      
-  )
-  {
-      throw new ApiError(400,"All fields are Required")
+const registerUser = asyncHandler(async (req, res) => {
+  const { email, username, password } = req.body;
+
+  if ([email, username, password].some((field) => String(field).trim() === "")) {
+    throw new ApiError(400, "All fields are Required");
   }
 
-  const existedUser = await User.findOne({  //1st occurance 
-      $or: [ {username} , {email} ]        // retuns doc that matches the 1st occurance of the given username or email
-  })
+  const existedUser = await User.findOne({
+    $or: [{ username }, { email }],
+  });
 
-  if(existedUser){
-      throw new ApiError(409,"User with same User name or email exists")
-  }
-
-  
-  const avatarLocalPath = req.file?.path;
-  if(!avatarLocalPath)
-  {
-      throw new ApiError(400,"Avatar file is required")
-  }
-
-  const avatar = await uploadOnCloudinary(avatarLocalPath)   
-  if(!avatar)
-  {
-      throw new ApiError(400,"Avatar file is required")
+  if (existedUser) {
+    throw new ApiError(409, "User with same username or email exists");
   }
 
   const user = await User.create({
-      avatar: avatar.url,      //we dont wanna send entire object(img) of avatar but just its url
-      email,
-      password,
-      username: String(username).toLowerCase()
-  })  
-  
-  const createdUser = await User.findById(user._id).select(
-      "-password -refreshToken"                     
-  )
-  // console.log("createdUser",createdUser);
+    email,
+    password,
+    username: String(username).toLowerCase(),
+  });
 
-  if(!createdUser)    //not exists
-  {
-      throw new ApiError(500,"something went wrong while registering User")
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  if (!createdUser) {
+    throw new ApiError(500, "Something went wrong while registering User");
   }
 
-  return res.status(201).json(
-    new ApiResponse(200,createdUser,"User Registered Successfully")
-  )
+  // Generate tokens
+  const { accessToken, refreshToken } = await generateAccessandRefreshTokens(user._id);
 
-})
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Set secure to true only in production
+    expires: new Date(Date.now() + 24 * 3600 * 1000), // Expire in 1 day
+    sameSite: "none", // Allow cross-site cookie access for production
+  };
+
+  // Set cookies
+  res.cookie("accessToken", accessToken, options);
+  res.cookie("refreshToken", refreshToken, options);
+
+  // Return user data with tokens
+  return res.status(201).json(
+    new ApiResponse(
+      200,
+      {
+        user: createdUser,
+        accessToken,
+        refreshToken,
+      },
+      "User registered and logged in successfully"
+    )
+  );
+});
+
 
 const loginUser = asyncHandler(async (req, res) => {
     console.log("Login Process Started");

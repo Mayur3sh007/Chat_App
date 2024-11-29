@@ -23,10 +23,6 @@ const userSchema = new Schema(
             type: String,
             required: [true, 'Password is required']
         },
-        avatar: {
-            type: String, // cloudinary url
-            required: true,
-        },
         token: {
             type: String
         }

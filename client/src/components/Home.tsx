@@ -14,6 +14,7 @@ const Home = () => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", { withCredentials: true });
+      // const response = await axios.get("http://localhost:3000/api/v1/user/getuser",{withCredentials:true})
       setUser(response.data.data);
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -53,7 +54,7 @@ const Home = () => {
           <h1>ChatApp</h1>
           {user ? (
             <div className="user-info">
-              <img src={user.avatar} alt={user.username} className="avatar" />
+              {/* <img src={user.avatar} alt={user.username} className="avatar" /> */}
               <span className="username">{user.username}</span>
               <button onClick={logout} className="logout-button">Logout</button>
             </div>
