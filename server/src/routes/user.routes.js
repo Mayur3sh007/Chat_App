@@ -10,7 +10,7 @@ userRouter.route("/login").post(loginUser)
 
 
 //Secured routes
-userRouter.route("/logout").get(verifyJWT,logoutUser);
+userRouter.route("/logout").post(verifyJWT,logoutUser);
 userRouter.route("/getuser").get(verifyJWT, getUserData);
 
 export default userRouter;
