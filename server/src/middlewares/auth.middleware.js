@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken"
 export const verifyJWT = asyncHandler( async(req, _, next) => {
   try {
     const token = req.cookies?.accessToken;
-  
+    
     if(!token) throw new ApiError(401, "Access token does not exist")
   
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
