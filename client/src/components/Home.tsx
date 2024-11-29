@@ -26,24 +26,27 @@ const Home = () => {
   const toLogin = () => {
     navigate("/login");
   };
-  const toChat = () =>{
+  const toChat = () => {
     navigate("/chat");
   }
 
   const logout = async () => {
     try {
-      // Sending a POST request to logout, passing userId in the request body
-      await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { userId: user._id }, { withCredentials: true });
-      // Alternative DELETE request, passing userId in the request body
-      // await axios.delete("http://localhost:3000/api/v1/user/logout", { data: { userId: user._id }, withCredentials: true });
-  
-      setUser(null); // Reset user state to null after successful logout
-      navigate("/login"); // Redirect to login page after logging out
-    } catch (err) {
-      console.error("Error logging out:", err);
+      // Send GET request to logout route with the credentials (cookies)
+      const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
+
+      // Optionally handle the response if needed
+      if (response.status === 200) {
+        // Redirect to the login page after successful logout
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Logout failed", error);
     }
   };
-  
+
+
+
 
   if (loading) {
     return (
@@ -52,7 +55,7 @@ const Home = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="home-page">
       <header>
@@ -73,7 +76,7 @@ const Home = () => {
         <div className="hero-content">
           <h1>Connect Instantly with <span className="highlight">ChatApp</span></h1>
           <p>Experience seamless communication with friends and colleagues. Start chatting now and stay connected wherever you go!</p>
-          <button onClick={toChat}  className="cta-button">Start Chatting</button>
+          <button onClick={toChat} className="cta-button">Start Chatting</button>
         </div>
       </main>
 

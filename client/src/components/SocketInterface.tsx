@@ -36,7 +36,7 @@ const SocketInterface: React.FC = () => {
   // Establish socket connection
   useEffect(() => {
     // const newSocket = io("http://localhost:3000") 
-    const newSocket = io("https://chat-app-backend-5es5.onrender.com") 
+    const newSocket = io("https://chat-app-backend-5es5.onrender.com")
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
@@ -58,7 +58,7 @@ const SocketInterface: React.FC = () => {
         //   withCredentials: true,
         // });
         console.log("User Data fetched: " + response.data.data);
-        
+
         alert("Logged In as: " + response.data.data.username);
         const user = response.data.data;
         console.log("Username: " + user.username);
@@ -111,7 +111,7 @@ const SocketInterface: React.FC = () => {
       senderId: userId,
       username: username,
       message: message,
-      mediaFile: mediaFile ? mediaFile : null, 
+      mediaFile: mediaFile ? mediaFile : null,
     };
 
     // console.log("Sender ID:", userId);
@@ -120,10 +120,10 @@ const SocketInterface: React.FC = () => {
     try {
       // console.log("Sending message to backend:", formData);
       // const response = await axios.post("http://localhost:3000/api/v1/chat/send", formData, { withCredentials:true});
-      const response = await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/chat/send", formData, { withCredentials:true});
+      const response = await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/chat/send", formData, { withCredentials: true });
 
       socket?.emit("message:send", {
-        ...response.data.data, 
+        ...response.data.data,
         clientMessageId,
       });
     } catch (error) {
@@ -214,22 +214,24 @@ const SocketInterface: React.FC = () => {
 
 
   const handleLogout = async () => {
-    // Emit the logout event with the userId
     socket?.emit("logout", userId);
-  
+
     try {
-      await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { userId }, { withCredentials: true });
-      // await axios.delete("http://localhost:3000/api/v1/user/logout", { data: { userId }, withCredentials: true });
-  
-      // Redirect to the login page
-      navigate('/login');
+      // Send GET request to logout route with the credentials (cookies)
+      const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
+
+      // Optionally handle the response if needed
+      if (response.status === 200) {
+        // Redirect to the login page after successful logout
+        navigate("/");
+      }
     } catch (error) {
       console.error("Logout failed", error);
     }
   };
-  
-  
-  
+
+
+
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -347,7 +349,7 @@ const SocketInterface: React.FC = () => {
                 placeholder="Type a message..."
                 className="flex-1 p-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
-              
+
               <button type="submit" className="bg-indigo-600 text-white p-3 rounded-full hover:bg-indigo-700 transition-colors duration-200">
                 <Send className="w-5 h-5" />
               </button>
