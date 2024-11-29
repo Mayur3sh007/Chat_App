@@ -42,7 +42,7 @@ const Home = () => {
     <div className="home-page">
       <header>
         <nav>
-          <a href="https://chat-upp.onrender.com/" className="logo">ChatApp</a>
+          <a href="/" className="logo">ChatApp</a>
           {user ? (
             <div className="user-info">
               <img src={user.avatar} alt={user.username} className="avatar" />
@@ -50,7 +50,7 @@ const Home = () => {
               <button onClick={logout} className="logout-button">Logout</button>
             </div>
           ) : (
-            <a href="https://chat-upp.onrender.com/login" className="login-button">Login</a>
+            <a href="/login" className="login-button">Login</a>
           )}
         </nav>
       </header>
@@ -59,7 +59,7 @@ const Home = () => {
         <div className="hero-content">
           <h1>Connect Instantly with <span className="highlight">ChatApp</span></h1>
           <p>Experience seamless communication with friends and colleagues. Start chatting now and stay connected wherever you go!</p>
-          <a href="https://chat-upp.onrender.com/chat" className="cta-button">Start Chatting</a>
+          <a href="/chat" className="cta-button">Start Chatting</a>
         </div>
       </main>
 
