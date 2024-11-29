@@ -35,7 +35,8 @@ const SocketInterface: React.FC = () => {
 
   // Establish socket connection
   useEffect(() => {
-    const newSocket = io("https://chat-app-backend-5es5.onrender.com");
+    // const newSocket = io("http://localhost:3000") 
+    const newSocket = io("https://chat-app-backend-5es5.onrender.com") 
     setSocket(newSocket);
 
     newSocket.on("connect", () => {

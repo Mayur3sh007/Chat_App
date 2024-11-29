@@ -8,10 +8,10 @@ function App() {
 
   return (
       <Routes>
-        <Route path="https://chat-upp.onrender.com/" element={<Home/>} />
-        <Route path="https://chat-upp.onrender.com/signup" element={<SignUp />} />
-        <Route path="https://chat-upp.onrender.com/login" element={<SignIn />} />
-        <Route path="https://chat-upp.onrender.com/chat" element={<SocketInterface />} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/chat" element={<SocketInterface />} />
       </Routes>
   );
 }
