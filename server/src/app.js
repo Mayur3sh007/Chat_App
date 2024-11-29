@@ -7,7 +7,7 @@ import userRouter from "./routes/user.routes.js";
 import chatRouter from "./routes/chat.routes.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;  //backend deployement port
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
@@ -32,7 +32,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'https://chat-upp.onrender.com',
     methods: ['GET', 'POST'],
     credentials: true,
   },

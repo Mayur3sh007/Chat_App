@@ -43,7 +43,7 @@ const SignUp: React.FC = () => {
     submitData.append('avatar', avatar);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/user/register', submitData, {
+      const response = await axios.post('https://chat-app-backend-5es5.onrender.com/api/v1/user/register', submitData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

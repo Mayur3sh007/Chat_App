@@ -12,7 +12,7 @@ const Home = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/user/getuser", { withCredentials: true });
+      const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", { withCredentials: true });
       setUser(response.data.data);
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -23,7 +23,7 @@ const Home = () => {
 
   const logout = async () => {
     try {
-      await axios.get("http://localhost:3000/api/v1/user/logout", { withCredentials: true });
+      await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", { withCredentials: true });
       setUser(null);
     } catch (err) {
       console.error("Error logging out:", err);
@@ -42,7 +42,7 @@ const Home = () => {
     <div className="home-page">
       <header>
         <nav>
-          <a href="https://chat-upp.onrender.com" className="logo">ChatApp</a>
+          <a href="https://chat-upp.onrender.com/" className="logo">ChatApp</a>
           {user ? (
             <div className="user-info">
               <img src={user.avatar} alt={user.username} className="avatar" />

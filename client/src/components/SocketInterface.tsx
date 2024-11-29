@@ -35,7 +35,7 @@ const SocketInterface: React.FC = () => {
 
   // Establish socket connection
   useEffect(() => {
-    const newSocket = io("http://localhost:3000");
+    const newSocket = io("https://chat-app-backend-5es5.onrender.com");
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
@@ -50,7 +50,7 @@ const SocketInterface: React.FC = () => {
   useEffect(() => {
     const fetchUsername = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/v1/user/getuser", {
+        const response = await axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/getuser", {
           withCredentials: true,
         });
         const user = response.data.data;
@@ -65,7 +65,7 @@ const SocketInterface: React.FC = () => {
         }
 
         const chatHistoryResponse = await axios.get(
-          "http://localhost:3000/api/v1/chat/history",
+          "https://chat-app-backend-5es5.onrender.com/api/v1/chat/history",
           { withCredentials: true }
         );
         const processedMessages = chatHistoryResponse.data.data.map((msg: any) => ({
@@ -101,7 +101,7 @@ const SocketInterface: React.FC = () => {
     const clientMessageId = `${userId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/chat/send", formData, {
+      const response = await axios.post("https://chat-app-backend-5es5.onrender.com/api/v1/chat/send", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("Sending message to backend:", response.data.data);
@@ -201,7 +201,7 @@ const SocketInterface: React.FC = () => {
     socket?.emit("logout", userId);
   
     // Handle logout logic (clear session, etc.)
-    axios.get("http://localhost:3000/api/v1/user/logout", {
+    axios.get("https://chat-app-backend-5es5.onrender.com/api/v1/user/logout", {
       withCredentials: true,
     });
   
