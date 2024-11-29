@@ -1,7 +1,7 @@
 
 
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Upload } from 'lucide-react';
 import { AuthLayout } from './AuthLayout';
@@ -28,6 +28,10 @@ const SignUp: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  const toSignIn = () => {
+    navigate("/login");
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,9 +149,9 @@ const SignUp: React.FC = () => {
         {/* Link to Sign In Page */}
         <div className="text-sm text-center">
           Already have an account?{""}
-          <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+          <button onClick={toSignIn} className="font-medium text-blue-600 hover:text-blue-500">
             Sign in
-          </Link>
+          </button>
         </div>
       </form>
     </AuthLayout>

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Home.css";
-
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,6 +21,13 @@ const Home = () => {
       setLoading(false);
     }
   };
+
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toChat = () =>{
+    navigate("/chat");
+  }
 
   const logout = async () => {
     try {
@@ -42,7 +50,7 @@ const Home = () => {
     <div className="home-page">
       <header>
         <nav>
-          <a href="/" className="logo">ChatApp</a>
+          <h1>ChatApp</h1>
           {user ? (
             <div className="user-info">
               <img src={user.avatar} alt={user.username} className="avatar" />
@@ -50,7 +58,7 @@ const Home = () => {
               <button onClick={logout} className="logout-button">Logout</button>
             </div>
           ) : (
-            <a href="/login" className="login-button">Login</a>
+            <button className="login-button" onClick={toLogin}>Login</button>
           )}
         </nav>
       </header>
@@ -59,7 +67,7 @@ const Home = () => {
         <div className="hero-content">
           <h1>Connect Instantly with <span className="highlight">ChatApp</span></h1>
           <p>Experience seamless communication with friends and colleagues. Start chatting now and stay connected wherever you go!</p>
-          <a href="/chat" className="cta-button">Start Chatting</a>
+          <button onClick={toChat}  className="cta-button">Start Chatting</button>
         </div>
       </main>
 

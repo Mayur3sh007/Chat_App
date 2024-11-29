@@ -17,6 +17,10 @@ export default function SignUp() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const toSignUp = () => {
+        navigate("/signup");
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
@@ -92,12 +96,12 @@ export default function SignUp() {
                 </form>
                 <p className="text-center text-sm text-gray-500 mt-4">
                     Don't have an account?{" "}
-                    <a
-                        href="/signup"
+                    <button
+                        onClick={toSignUp}
                         className="text-blue-600 hover:underline"
                     >
                         Sign Up
-                    </a>
+                    </button>
                 </p>
             </div>
         </div>
