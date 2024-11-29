@@ -151,7 +151,10 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true
+    secure: process.env.NODE_ENV === 'production',
+    expires: new Date(Date.now() + 24 * 3600 * 1000),
+    sameSite: 'none',  
+    maxAge: 0
   }
 
   return res
